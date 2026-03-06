@@ -14,7 +14,10 @@ import {
   Timer,
   MapPin,
   Megaphone,
-  Navigation
+  Navigation,
+  Swords,
+  UserCircle2,
+  PartyPopper
 } from 'lucide-react';
 
 // 解析并提取图片中的数据
@@ -94,6 +97,99 @@ const TicketingTimeline = ({ event }) => {
             )}
           </div>
         ))}
+      </div>
+    </div>
+  );
+};
+
+// W & Y 专属作战计划组件
+const WYBattlePlan = () => {
+  const planSteps = [
+    { time: '12:00', type: 'shared', title: '检查大麦优先购资格', desc: '总决赛、奇墨开放麦、天才的三个夜晚' },
+    { time: '14:00', type: 'shared', title: '抢「奇墨开放麦」优先购资格', desc: '⚠️ 提前登录单立人小程序\n路径：积分兑换 -> 积分兑换 -> 优先购#奇墨开放麦' },
+    { time: '18:00', type: 'shared', title: '各自抢购 4.10 奇墨开放麦', desc: '4.10 22:30场次 / 180档 / 小程序' },
+    { time: '18:02', type: 'split', wTask: '抢购 总决赛 (220档)', yTask: '抢购 天才的三个夜晚 (580档)', platform: '小程序' },
+    { time: '19:00', type: 'shared', title: '各自抢购 4.12 奇墨开放麦', desc: '4.12 18:00场地 / 180档 / 小程序' },
+    { time: '19:02', type: 'split', wTask: '抢购 半决赛-3 (180档)', yTask: '抢购 半决赛-1、半决赛-2 (180档)', platform: '小程序' },
+    { time: '成功', type: 'finish', title: '快乐看演出！', desc: '抢票全部结束，准备去阿那亚看海听段子🌊' }
+  ];
+
+  return (
+    <div className="bg-white rounded-[2rem] shadow-sm border border-rose-100 overflow-hidden mb-10">
+      {/* 头部标题区 */}
+      <div className="bg-gradient-to-r from-rose-500 to-pink-500 p-5 sm:p-6 text-white flex justify-between items-center shadow-inner">
+        <h3 className="text-xl sm:text-2xl font-extrabold flex items-center gap-2.5 tracking-tight">
+          <Swords className="w-6 h-6 sm:w-7 sm:h-7" /> 
+          W & Y 抢票作战计划
+        </h3>
+        <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-bold backdrop-blur-sm border border-white/20 hidden sm:block">
+          3月7日 决战日
+        </span>
+      </div>
+
+      {/* 时间轴主体 */}
+      <div className="p-5 sm:p-8">
+        <div className="relative border-l-[3px] border-rose-100 ml-3 sm:ml-5 space-y-8 pb-2">
+          {planSteps.map((step, idx) => (
+            <div key={idx} className="relative pl-6 sm:pl-8">
+              {/* 时间轴圆点 */}
+              <div className={`absolute -left-[11px] top-1 w-5 h-5 rounded-full border-4 border-white shadow-sm flex items-center justify-center ${
+                step.type === 'finish' ? 'bg-emerald-500' : 'bg-rose-500'
+              }`}>
+              </div>
+
+              {/* 任务内容 */}
+              <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                {/* 时间标识 */}
+                <div className={`text-lg sm:text-xl font-black font-mono tracking-tight shrink-0 mt-0.5 ${
+                  step.type === 'finish' ? 'text-emerald-500' : 'text-rose-500'
+                }`}>
+                  {step.time}
+                </div>
+
+                {/* 具体任务详情 */}
+                <div className="flex-1 w-full">
+                  {step.type === 'shared' && (
+                    <div className="bg-rose-50/50 rounded-2xl p-4 sm:p-5 border border-rose-100/60">
+                      <div className="font-bold text-gray-800 text-base sm:text-lg mb-1.5">{step.title}</div>
+                      <div className="text-sm sm:text-base text-gray-600 whitespace-pre-line leading-relaxed">{step.desc}</div>
+                    </div>
+                  )}
+
+                  {step.type === 'split' && (
+                    <div className="flex flex-col sm:flex-row gap-3 w-full">
+                      {/* W 的任务 */}
+                      <div className="flex-1 bg-blue-50/80 rounded-2xl p-4 sm:p-5 border border-blue-100">
+                        <div className="font-bold text-blue-800 flex items-center gap-1.5 mb-2">
+                          <UserCircle2 className="w-5 h-5" /> W 的任务
+                        </div>
+                        <div className="text-sm sm:text-base text-blue-900 font-medium leading-relaxed">{step.wTask}</div>
+                        <div className="text-xs text-blue-500 mt-2 font-medium">平台: {step.platform}</div>
+                      </div>
+                      {/* Y 的任务 */}
+                      <div className="flex-1 bg-purple-50/80 rounded-2xl p-4 sm:p-5 border border-purple-100">
+                        <div className="font-bold text-purple-800 flex items-center gap-1.5 mb-2">
+                          <UserCircle2 className="w-5 h-5" /> Y 的任务
+                        </div>
+                        <div className="text-sm sm:text-base text-purple-900 font-medium leading-relaxed">{step.yTask}</div>
+                        <div className="text-xs text-purple-500 mt-2 font-medium">平台: {step.platform}</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {step.type === 'finish' && (
+                    <div className="bg-emerald-50 rounded-2xl p-4 sm:p-5 border border-emerald-100 mt-1">
+                      <div className="font-bold text-emerald-800 text-lg flex items-center gap-2 mb-1">
+                        <PartyPopper className="w-5 h-5" /> {step.title}
+                      </div>
+                      <div className="text-sm sm:text-base text-emerald-600">{step.desc}</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -316,8 +412,13 @@ export default function App() {
 
       {activeRound === 'round1' ? (
         <>
+          {/* 加入 W & Y 专属作战计划 */}
+          <div className="max-w-4xl mx-auto px-5 sm:px-6">
+             <WYBattlePlan />
+          </div>
+
           {/* 概览统计卡片 */}
-          <div className="max-w-4xl mx-auto px-5 sm:px-6 mt-4 mb-10">
+          <div className="max-w-4xl mx-auto px-5 sm:px-6 mb-10">
             <div className="bg-gradient-to-br from-indigo-900 to-purple-900 rounded-[2rem] p-6 sm:p-10 text-white shadow-xl shadow-indigo-900/20 overflow-hidden relative">
               <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-white opacity-5 rounded-full blur-3xl"></div>
               <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-48 h-48 bg-purple-500 opacity-20 rounded-full blur-3xl"></div>
@@ -328,7 +429,7 @@ export default function App() {
                     2026 单立人喜剧节
                   </span>
                 </div>
-                <h2 className="text-2xl sm:text-4xl font-extrabold mb-3 tracking-tight">第一轮开票</h2>
+                <h2 className="text-2xl sm:text-4xl font-extrabold mb-3 tracking-tight">第一轮开票概览</h2>
                 <p className="text-indigo-200 mb-8 flex items-center gap-2 text-base sm:text-lg">
                   <Megaphone className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" /> 
                   <span className="font-medium text-white">明日开售！</span>演出单元首轮场次抢先看
